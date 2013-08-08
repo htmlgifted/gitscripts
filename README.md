@@ -7,4 +7,4 @@ Scripts Include
 
 this script set is for git users, bitbucket users, and any body else wantiong to make linux admin easier... I hope you enjoy these scripts that I and My partener have made to help you the end user... 
 
-This readme is here to help you better understand wht these scripts are and do. 
+This readme is here to help you better understand what these scripts are and do. 
