@@ -1,0 +1,8 @@
+#This script line connects you to a successful
+#set up of a ssh server. Use this code for all 
+#machines you want to connect to the ssh share 
+#with sshfs. make sure to pay attention to where 
+#your share is and where you want it..  
+#It will create dirif it does not find it.
+
+sshfs -o idmap=user user@sshserveripaddress:/the/dir/u/want/to/share /place/to share/dir/to
