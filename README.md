@@ -13,7 +13,11 @@ This readme is here to help you better understand what these scripts are and do.
 Contents-
  Folders - ipscan
 	 - sshfs
-	 - github Autopush
+	 - github
+	   1. Autopush
+	   2. Merge_branch
+	   3. merge_master
+
 	 - Web based scripts
 	   1. a php email list builder
 	   2.

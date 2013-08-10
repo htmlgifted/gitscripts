@@ -1,0 +1,21 @@
+#!/bin/bash
+# This script contacts github and merges repo
+# this script is ran to luanch this 
+# script before editing local files.
+
+# this command changes the directory to the local repo directory
+cd /$HOME/Github/repo/dir &&
+
+# this line lists current branch
+git branch &&
+
+# pull any changes you made online
+git pull &&
+
+# pull master changes if any
+git fetch upstream &&
+
+#merge with current branch
+git merge upstream/branch
+
+echo "Successful Merge $USER. Now working on ${PWD##*/}"
