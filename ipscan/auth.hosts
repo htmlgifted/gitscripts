@@ -1,0 +1,27 @@
+#these are the autherized ip address
+# on your network enter as much of them as needed
+# I choose the ip address as a defualt for you to
+#change to your network Ip range.
+
+192.168.0.2	
+192.168.0.4	
+192.168.0.6	
+192.168.0.11	
+192.168.0.15	
+192.168.0.16	
+192.168.0.19	
+192.168.0.5	
+192.168.0.22	
+192.168.0.23	
+192.168.0.24	
+192.168.0.25	
+192.168.0.7	
+192.168.0.17	
+192.168.0.26	
+192.168.0.20	
+192.168.0.21	
+192.168.0.8	
+192.168.0.3	
+192.168.0.9	
+192.168.0.13	
+192.168.0.10	
