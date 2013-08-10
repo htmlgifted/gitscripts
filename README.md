@@ -10,9 +10,12 @@ this script set is for git users, bitbucket users, and any body else wantiong to
 This readme is here to help you better understand what these scripts are and do. 
 
 
-Contents-
- Folders - ipscan
+### Contents ###
+
+         - ipscan
+
 	 - sshfs
+
 	 - github
 	   1. Autopush
 	   2. Merge_branch
