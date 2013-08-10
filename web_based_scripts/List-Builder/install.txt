@@ -1,0 +1,40 @@
+# ----------------------------------------------------
+# ----- List Builder
+# ----- Version 1.0
+# ----- Created on: 08/10/2013
+# ----- Designed by: HtmlGifted & 
+# ----- http://www.jeremyahenry.com
+# ----- Please feel free to modify this script for your own purpose.
+# ----- If you found this little script helpful, send me an email!
+# ----- ENJOY!!!
+# ----------------------------------------------------
+
+Installation:
+
+Open the " results.php " with a text editor, modify the email@address.com areas:
+
+
+
+//Sending Email to form owner
+# Email to Owner 
+$pfw_email_to = "email@address.com";
+
+
+//Sending auto respond Email to user
+# Email to Owner 
+$pfw_header = "From: email@address.com";
+
+
+You can also edit the " header.html " file and the " footer.html " file to your
+liking.
+
+You many need to chmod " email-file.txt " to 0777, writable.
+
+upload the files. That's it...
+
+
+Feel free to modify this script as much as you like. Popup window script
+not included.
+
+Popup Window Creator located at:
+http://javascript.internet.com/generators/popup-window.html
