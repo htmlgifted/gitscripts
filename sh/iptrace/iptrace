@@ -1,0 +1,14 @@
+#!/bin/bash
+#find geographical location 
+#of any ip address. Enjoy
+#How to run this script-
+#1. put in bin dir.
+#2. enter line "iptrace ipaddress"
+
+lynx -dump  http://www.ip-adress.com/ip_tracer/?QRY=$1|grep address|egrep 'zip|city|state|country'|awk '{print $3,$4,$5,$6,$7,$8}'|sed 's\ip address flag \\'|sed 's\My\\'
+
+#the following is to 
+#get a tinyurl of the map.
+URL=`lynx -dump http://www.ip-adress.com/ip_tracer/?QRY=$1|grep details|awk '{print $2}'`
+
+lynx -dump http://tinyurl.com/create.php?url=$URL|grep tinyurl|grep "19. http"|awk '{print $2}'

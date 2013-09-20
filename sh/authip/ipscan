@@ -1,0 +1,12 @@
+#!/bin/bash
+#This script is meant to report pingable
+#ip address that are not supposed to be active.
+#If active then will display outcome
+
+#This finds the current ip 
+#address and sets it as base
+IPBASE=$(ifconfig eth0 | sed -nr '/inet addr:/{s/ *inet addr:([^ ]*)\..*/\1/;p}')
+
+#Scan your LAN for unauthorized IPs
+#email Unauthorized ip
+diff <(nmap -sP $IPBASE.2/24 | grep ^Host | sed 's/.appears to be up.//g' | sed 's/Host //g') /home/server/scripts/auth.hosts | sed 's/[0-9][a-z,A-Z][0-9]$//' | sed 's/</UNAUTHORIZED IP -/g' >> home/server/scripts/unath/unath.hosts && mutt webmaster@jeremyahenry.com -s "New Unauthorized Ip Address" -a unauth.hosts </dev/null

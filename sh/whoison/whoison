@@ -1,0 +1,32 @@
+#!/bin/bash
+
+#This script runs and checks for all
+#all active ips on a network then adds
+#the list to a file called ips.txt in 
+#the user dir. Enjoy
+
+#changes dir
+cd /home/$USER/
+CIDR=$(ip addr show |grep -w inet | grep -v 127.0.0.1 | awk '{ print $2}'| cut -d "/" -f 2)
+
+IPBASE=$(ifconfig eth0 | sed -nr '/inet addr:/{s/ *inet addr:([^ ]*)\..*/\1/;p}')
+
+#Finds all active ip adresses on network
+nmap -sP $IPBASE.0/$CIDR '--exclude' $IPBASE.1 | grep "Nmap scan report for"| cut -d' ' -f 5  > /home/$USER/ips.txt
+
+#this counts the lines used in the ips.txt file
+#then this command echo's the count
+COUNT=$(wc ips.txt -l)
+echo $COUNT 
+
+#This echo's the # of ip addresses 
+#found in ips.txt file
+echo
+#This line shows u ips.txt contents
+cat ips.txt
+
+#changes the dir back to the orignal
+cd "$OLDPWD"
+
+#this line echo's finished running
+echo "$USER U can find these ips in ips.txt in $HOME"

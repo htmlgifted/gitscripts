@@ -1,0 +1,50 @@
+#!/bin/bash
+#####################################################
+#####################################################
+##This script was built by gld1982ltd              ##
+## ON 08/14/2013                                   ##
+##                                                 ##
+#####################################################
+#####################################################
+#Need to edit Username line to your git username
+#then change the Git dir to ur current working dir
+#
+REPO=$1
+BRANCH=$2
+USERNAME=gld1982ltd
+GITDIR=$HOME/Git
+LOCALREPO=$GITDIR/$1
+GITURL=git@github.com:$USERNAME/$1.git
+OLDPWD=$PWD
+
+function clone() {
+  echo "Cloning remote repository from ${GITURL}..."
+  git clone -q $GITURL $LOCALREPO
+  }
+
+function checkout() {
+  echo "Entering ${BRANCH} branch..."
+  git checkout -q $BRANCH
+  }
+
+function pull () {
+  echo "Pulling from remote repository..."
+  git pull -q origin $BRANCH
+  }
+
+function commit () {
+  echo "Committing merged changes..."
+  git commit -qam 'autogit commit'
+  }
+
+cd "$GITDIR"
+
+test ! -d $LOCALREPO && clone
+
+cd "$LOCALREPO"
+export CURRENTBRANCH="$(git rev-parse --abbrev-ref HEAD)"
+test "$CURRENTBRANCH" != $BRANCH && checkout
+pull
+commit
+cd "$OLDPWD"
+echo "${REPO} successfully pulled from ${GITURL}"

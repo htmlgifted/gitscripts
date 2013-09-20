@@ -1,0 +1,13 @@
+#! /bin/sh
+#This script is to help find and
+#detect Dictonary attacks.
+
+d=`date +"%b %d"`
+grep "$d" /var/log/mail/info.log|grep ruleset=check_rcp | gawk 
+'{split($0,q,/[\[\]]/);print "/sbin/iptables -A INPUT -s " q[4] "/32 -j 
+DROP"}' | sort -u > /tmp/fw$$
+#reset iptable to base
+/etc/rc.d/rc.fw > /dev/null 2>&1
+#add new filter(s)
+. /tmp/fw$$
+rm -f /tmp/fw$$

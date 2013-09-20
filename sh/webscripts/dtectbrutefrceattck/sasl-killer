@@ -1,0 +1,154 @@
+#!/bin/bash
+###################################################################################
+#################################################################################
+#   version="0.0.2"
+#   Qua Set 12 16:24:14 BRT 2012
+#   -- added whitelist for "heavy users"
+#
+#   version 0.0.1-alfa	
+#   postfix mail server
+#
+#   $DATE: Thu May 14 01:48:13 BRT 2009
+#
+#   Written by
+#    - Julio Cesar Covolato <julio@psi.com.br>#
+#################################################################################
+
+
+#################################################################################
+# Set the following lines to your environment
+#################################################################################
+# Mysql
+DBHOST="localhost"
+DBUSER="postfix"
+DBPASSWD="senha_postfix"
+DBNAME="postfix"
+
+# Mail address to send blocked users
+EMAIL="webmaster"
+
+# For log compat.
+LANG="eng"
+
+# $# which iptables
+#IPT="/usr/sbin/iptables"
+IPT="/sbin/iptables"
+
+# Mail log:
+#MAIL_LOG="/var/log/messages"
+#MAIL_LOG="/var/log/maillog"
+MAIL_LOG="/var/log/mail.log"
+
+# Time (minutes) to keep blocked the User (default 120 min).
+# default disabled (blocked forever!!)
+BLOCK_TIME="60" #(Minutes)
+
+# Seconds between each run (default 120 secods)
+SCHDL="120" #(SECONDS)
+
+# Minimun logins by the same user to act in which run:
+REJECTS="50"
+
+# Amount of last lines to search for "sasl logins" in the log (default to 2000 lines).
+TAIL_LINES="5000"
+
+# Whitelist "heavy users", uncoment and edit the line:
+#echo "user@domain.com user2@domain2.com ..." > /tmp/whitelist.$$
+
+###################################################################################
+###     END OF SETINGS
+###################################################################################
+trap "rm -f /tmp/{*.$$};exit" SIGHUP SIGINT SIGTERM SIGKILL
+
+#touch /tmp/blocked.`date +%b-%d-%Hh`
+touch /tmp/{blocked.$$,whitelist.$$}
+#########################
+#       FUNCTIONS       #
+#########################
+
+#######################################
+###     Searching the log file
+#######################################
+search () {
+
+# Set actual date
+DATE=`date +%b-%d-%Hh`
+
+tail -n $TAIL_LINES $MAIL_LOG|grep sasl_username|awk '{print $9}'|\
+cut -d"=" -f2|sort|uniq -c|sort > /tmp/spamkiller.$$
+        }
+
+#######################################
+###     Block or not the user
+#######################################
+block () {
+# for each line in result
+while read line
+
+do
+  COUNT=`echo $line | cut -d" " -f1`
+  USER=`echo $line | cut -d" " -f2`
+
+  if  [ $COUNT -lt $REJECTS ];
+  then
+    echo -e "$USER\tOK: $COUNT Attempts"
+  else
+       if ! grep $USER /tmp/blocked.* /tmp/whitelist.$$ > /dev/null
+        then
+                echo -e "blocking $USER\t$COUNT Attempts"
+                mysql -B -h$DBHOST -u$DBUSER -p$DBPASSWD -D$DBNAME -e \
+                "UPDATE mailbox SET active = '0' WHERE username = '$USER' LIMIT 1 ;"
+#		su - zimbra -c "zmprov sp $USER P@sSWord"
+#		su - zimbra -c "zmprov -s zm_ldap_server flushCache account $USER"
+                echo $USER >> /tmp/blocked.$$
+#                echo "zmprov sp $USER P@sSWord"|mail -s "SASL-KILLER BLOCKED $USER WITH $COUNT ATTEMPTS" $EMAIL
+		echo "BLOCKED $USER SASL PASSWORD"|mail -s "SASL-KILLER BLOCKED $USER WITH $COUNT ATTEMPTS" $EMAIL
+        else
+                echo -e "Alredy blocked $USER\t$COUNT REJECTS Attempts"
+        fi
+  fi
+
+done < /tmp/spamkiller.$$
+        }
+
+#######################################
+###     Unblock
+#######################################
+unblock () {
+for i in `find /tmp/ -type f -name 'blocked.*'  -cmin +$BLOCK_TIME`
+do
+        for j in `cat $i`;
+        do
+                echo -e "UNBLOCKING passwd for $j"
+                 mysql -B -h$DBHOST -u$DBUSER -p$DBPASSWD -D$DBNAME -e \
+                "UPDATE mailbox SET active = '1' WHERE username = '$j' LIMIT 1 ;"
+        done
+        echo -e "Deleting file $i"
+        rm -f $i
+done
+
+        }
+
+####################
+#       MAIN       #
+####################
+until [ ];
+
+do
+
+        search
+
+        block
+
+# Not fully implemented yet:
+#        unblock
+
+        # remove temp files
+#       rm -f /tmp/spamkiller.$$
+        echo -e "SASL-KILLER IS BLOCKING `cat /tmp/blocked.*|wc -l` USERS"
+        echo "======================================"
+        sleep $SCHDL
+done
+
+###END
+

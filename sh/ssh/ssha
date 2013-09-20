@@ -1,0 +1,10 @@
+#!/bin/bash
+#
+# This script moounts a remote sshfs 
+#location on andriod phone
+
+#This mounts the sdcard through sshfs
+
+# command to mount at home
+
+sshfs -o nonempty root@10.0.0.10:/mnt/sdcard /$HOME/android -p 2222 -o reconnect; }

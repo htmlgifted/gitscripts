@@ -1,0 +1,10 @@
+#!/bin/bash
+#This script gets your public Ip
+#address at start up and puts it 
+#in a script for later use.
+
+#This command gets the ip.
+#then this command puts the Ip address
+#in a pub_ip.txt file in ur home dir.
+wget -qO- ifconfig.me/ip > $HOME/pub_ip.txt
+

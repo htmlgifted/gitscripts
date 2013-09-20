@@ -1,0 +1,9 @@
+#!/bin/bash
+#This script sync's 
+#The Dev Folder of your system.
+
+#This command runs the sync
+rsync -a --update /$HOME/Dev/ /home/htmlgifted/WDHD/MyStuff/Dev/
+
+#This Commnd echo's results.
+echo "$USER your dev folder's have been synced"

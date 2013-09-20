@@ -1,0 +1,25 @@
+#!/bin/bash
+#Get info about remote host
+#ports and aviod Network 
+#Administrator detection. enjoy.
+
+#tells the script to use these 
+#files to finish some cmnds.
+
+#finds network cidr notation..
+CIDR=$(ip addr show |grep -w inet | grep -v 127.0.0.1 | awk '{ print $2}'| cut -d "/" -f 2)
+
+#Finds a random ip address in a file.
+RIP1=$(shuf -n 1 ~/ips.txt | cut -d"." -f4)
+
+#gets the local ip address range example = 10.0.0.1
+#with out the forth number.
+IPBASE=$(ifconfig eth0 | sed -nr '/inet addr:/{s/ *inet addr:([^ ]*)\..*/\1/;p}')
+
+#Use a decoy while scanning ports 
+#to avoid getting caught by the sys admin.
+sudo nmap -sS $IPBASE.$RIP1/$CIDR -D $IPBASE.$RIP1 --open -oN  /home/$USER/openports.txt
+
+#this line echo's script done.
+echo "$USER U can find these ips in openoprts.txt in $HOME"
+

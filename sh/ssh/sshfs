@@ -1,0 +1,22 @@
+#!/bin/bash
+#
+# This script moounts a remote sshfs location based on the ip of tyhe local machine.
+# 
+# Determine current IP
+IP=$(hostname -I)
+# Define Home's IP
+HOME='10.0.0.15'
+# Define function to mount at home
+function Home() {
+sshfs server@10.0.0.4:/media/WDHD-Home /home/htmlgifted/WDHD -o reconnect; }
+# Define function to mount away from home
+function AwayFromHome() {
+sshfs server@68.43.192.89:/media/WDHD-Home /home/htmlgifted/WDHD -o reconnect; }
+# If the current IP matches Home's
+if [[ "$IP" == "$HOME" ]]; then
+# Run the function to mount at home
+	Home
+# If not run the command to mount away from home
+else
+	AwayFromHome
+fi
