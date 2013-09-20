@@ -1,8 +1,0 @@
-#!/bin/bash
-
-cd "$1"
-git add -A .
-git commit -q -m 'automated update'
-git push -q
-cd "$OLDPWD"
-echo "Repo $1 Has now Been pushed to remote site"

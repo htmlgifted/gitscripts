@@ -29,28 +29,33 @@ die("<p align=\"center\"><font face=\"Vrinda\" size=\"4\"color=\"#FFFFFF\">email
 //Sending Email to form owner
 # Email to Owner 
 $pfw_header = "From: $email";
-$pfw_subject = "Hello";
-$pfw_email_to = "email@address.com";
+$pfw_subject = "New Signup";
+$pfw_email_to = "webmaster@jeremyahenry.com";
 $pfw_message = "email: $email\n"
-. "Thank You For Your eMail";
+. "Hay you got a new newsletter sign up. congrates. here is there email address
+$email";
 @mail($pfw_email_to, $pfw_subject ,$pfw_message ,$pfw_header ) ;
 
 //Sending auto respond Email to user
 # Email to Owner 
-$pfw_header = "From: email@address.com";
+$pfw_header = "From: webmaster@jeremyahenry.com";
 $pfw_subject = "Comfirmation";
 $pfw_email_to = "$email";
-$pfw_message = "This is to confirm we have gotten your email.";
+$pfw_message = "Thank you for signing up to jeremyahenry.com newsletter!
+ I hope you enjoy your email's i will be sending out very soon so keep an eye out and i will be geting you all kinds of things... Till Then..  
+Sincerly 
+Jeremy Henry
+http://www.jeremyahenry.com ";
 @mail($pfw_email_to, $pfw_subject ,$pfw_message ,$pfw_header ) ;
 
 //saving record in a text file
 $pfw_file_name = "email-file.txt";
 $pfw_first_raw = "email\r\n";
-$pfw_values = "$email\r\n";
-$pfw_is_first_row = false;
+$pfw_values = ",$email\r\n";
+$pfw_is_first_row = true;
 if(!file_exists($pfw_file_name))
 {
- $pfw_is_first_row = true ;
+ $pfw_is_first_row = false ;
 }
 if (!$pfw_handle = fopen($pfw_file_name, 'a+')) {
  die("Cannot open file ($pfw_file_name)");

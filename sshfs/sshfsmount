@@ -5,4 +5,4 @@
 #your share is and where you want it..  
 #It will create dirif it does not find it.
 
-sshfs -o idmap=user user@sshserveripaddress:/the/dir/u/want/to/share /place/to share/dir/to
+sshfs -o idmap=user user@sshserveripaddress:/the/dir/u/want/to/share /place/to/share/dir/to
